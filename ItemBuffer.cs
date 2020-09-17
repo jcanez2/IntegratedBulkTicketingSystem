@@ -40,10 +40,10 @@ namespace IntegratedBulkTicketingSystem
             }
         }
 
-        public TicketOrder getOneCell()
+        public TicketOrder getOneItem()
         {
             _readSemaphores.WaitOne();
-            TicketOrder retrievedOrder = new TicketOrder(0,0,"not valid order");
+            TicketOrder retrievedOrder = new TicketOrder(0,0,"not a valid order");
 
             lock (this)
             {
@@ -70,7 +70,7 @@ namespace IntegratedBulkTicketingSystem
             return retrievedOrder;
         }
         
-        public void setOneCell(TicketOrder newOrder)
+        public void setOneItem(TicketOrder newOrder)
         {
             _writeSemaphores.WaitOne();
 

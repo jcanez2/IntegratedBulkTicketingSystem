@@ -5,9 +5,9 @@ using System.Threading;
 
 namespace IntegratedBulkTicketingSystem
 {
-    class TicketAgency
+    public class TicketAgency
     {
-        public static event EventCreateOrder CreateOrder;
+        public static event EventCreateOrder CreateOrderEvent;
         public static Random Rand = new Random();
 
         public void StartWorkTicketAgency()
@@ -18,7 +18,7 @@ namespace IntegratedBulkTicketingSystem
                 NewOrder(Thread.CurrentThread.Name);
             }
         }
-
+         
         private void NewOrder(string id)
         {
             int cardNumber = Rand.Next(9000, 9999);
@@ -26,8 +26,8 @@ namespace IntegratedBulkTicketingSystem
 
             TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id);
             Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested}, at {DateTime.Now:hh:mm:ss t z}.");
-            Program.TicketOrderBuffer.setOneCell(newOrder); // Sends order to buffer
-            CreateOrder?.Invoke(); // Lets Theme park know an order was created
+            Program.TicketOrderBuffer.setOneItem(newOrder); // Sends order to buffer
+            CreateOrderEvent?.Invoke(); // Lets Theme park know an order was created
         }
 
         public void OrderHasBeenProcessed(TicketOrder myOrder, int price, int amountPlusTax)
