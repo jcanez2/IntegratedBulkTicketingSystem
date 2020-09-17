@@ -4,6 +4,10 @@ using System.Security.Cryptography.X509Certificates;
 namespace IntegratedBulkTicketingSystem
 {
     public delegate void EventCreateOrder();
+
+    public delegate void EventOrderProcessing(TicketOrder myOrder, int priceOfTicket, int totalDue);
+
+    public delegate void EventTicketsOnSale(string id, int price);
     
     class Program
     {
