@@ -22,9 +22,15 @@ namespace IntegratedBulkTicketingSystem
                 //ProcessOrderEvent?.Invoke(myOrder, price, amountPlusTax); // (7) 
                 //Console.WriteLine($"Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} at a price of {price} amount after tax is {amountPlusTax}.");// (7)
                 int amountPlusTax = CalculateTotalAfterTax(price, myOrder.NumberOfTickets); //(6)
-                SendOrderConfirmation(myOrder, price, amountPlusTax); // (7)
-                PrintOrder(myOrder, price, amountPlusTax);
-
+                if (RemoveTicketsFromParkInventory(myOrder.NumberOfTickets))
+                {
+                    SendOrderConfirmation(myOrder, price, amountPlusTax); // (7)
+                    PrintOrder(myOrder, price, amountPlusTax);
+                }
+                else
+                {
+                    PrintCancelOrder(myOrder, price, amountPlusTax);
+                }
                 return true;
             }
             else
@@ -32,6 +38,16 @@ namespace IntegratedBulkTicketingSystem
                 Console.WriteLine($"The card number {myOrder.CardNumber} is not valid, the order for {myOrder.Id} is cancelled.");
                 return false;
             }
+        }
+
+        private static void PrintCancelOrder(TicketOrder myOrder, int price, int totalAmount)
+        {
+            Console.WriteLine($"{myOrder.Id} ORDER CANCELLED:\nNot enough tickets available at time of purchase!");
+        }
+
+        private static bool RemoveTicketsFromParkInventory(int numberOfTickets)
+        {
+            return ThemePark.RequestTicketsFromParkInventory(numberOfTickets);
         }
 
         private static int CalculateTotalAfterTax(int price, int numberOfTickets)
