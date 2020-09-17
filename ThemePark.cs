@@ -184,7 +184,7 @@ namespace IntegratedBulkTicketingSystem
         {
             _totalNumberOfOrders++;
             TicketOrder currentTicketOrder = Program.TicketOrderBuffer.getOneItem(); // (4)
-            Thread newThread = new Thread(() => OrderProcessing.ProcessOrder(currentTicketOrder, _currentCurrentTicketPrice)); // this should not process at the current price but at the sale price
+            Thread newThread = new Thread(() => OrderProcessing.ProcessOrder(currentTicketOrder, _currentCurrentTicketPrice)); // (4)
             newThread.Start();
         }
 

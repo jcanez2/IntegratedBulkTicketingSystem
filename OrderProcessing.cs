@@ -21,15 +21,15 @@ namespace IntegratedBulkTicketingSystem
                 //int amountPlusTax = (int)((price * myOrder.NumberOfTickets ) * taxAmount);// (6)
                 //ProcessOrderEvent?.Invoke(myOrder, price, amountPlusTax); // (7) 
                 //Console.WriteLine($"Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} at a price of {price} amount after tax is {amountPlusTax}.");// (7)
-                int amountPlusTax = CalculateTotalAfterTax(price, myOrder.NumberOfTickets); //(6)
+                int amountPlusTaxAndFees = CalculateTotalAfterTaxAndFees(price, myOrder.NumberOfTickets, 25); //(6)
                 if (RemoveTicketsFromParkInventory(myOrder.NumberOfTickets))
                 {
-                    SendOrderConfirmation(myOrder, price, amountPlusTax); // (7)
-                    PrintOrder(myOrder, price, amountPlusTax);
+                    SendOrderConfirmation(myOrder, price, amountPlusTaxAndFees); // (7)
+                    PrintOrder(myOrder, price, amountPlusTaxAndFees);
                 }
                 else
                 {
-                    PrintCancelOrder(myOrder, price, amountPlusTax);
+                    PrintCancelOrder(myOrder, price, amountPlusTaxAndFees);
                 }
                 return true;
             }
@@ -50,11 +50,12 @@ namespace IntegratedBulkTicketingSystem
             return ThemePark.RequestTicketsFromParkInventory(numberOfTickets);
         }
 
-        private static int CalculateTotalAfterTax(int price, int numberOfTickets)
+        private static int CalculateTotalAfterTaxAndFees(int price, int numberOfTickets, int fee)
         {
             double taxAmount = 1.08;
             int amountAfterTax = (int)((price *numberOfTickets) * taxAmount);
-            return amountAfterTax;
+            int amountAfterTaxAndFee = amountAfterTax + fee;
+            return amountAfterTaxAndFee;
         }
 
         private static void SendOrderConfirmation(TicketOrder myOrder, int price, int totalAmount)
@@ -64,7 +65,7 @@ namespace IntegratedBulkTicketingSystem
 
         private static void PrintOrder(TicketOrder myOrder, int price, int totalAmount)
         {
-            Console.WriteLine($"Order Process Thread Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} tickets at a price of ${price} amount after tax is ${totalAmount}.");// (7)
+            Console.WriteLine($"Order Process Thread Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} tickets at a price of ${price} amount after tax and fees is ${totalAmount}.");// (7)
         }
     }
 }
