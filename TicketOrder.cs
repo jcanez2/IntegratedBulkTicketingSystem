@@ -10,6 +10,13 @@ namespace IntegratedBulkTicketingSystem
         private int _numberOfTickets;
         private int _cardNumber;
         private string _id;
+        private int _price;
+
+        public int price
+        {
+            get => _price;
+            set => _price = value;
+        }
 
         public int NumberOfTickets
         {
@@ -29,11 +36,12 @@ namespace IntegratedBulkTicketingSystem
             set => _id = value;
         }
 
-        public TicketOrder(int numberOfTickets, int cardNumber, string id)
+        public TicketOrder(int numberOfTickets, int cardNumber, string id, int price)
         {
             this._numberOfTickets = numberOfTickets;
             this._cardNumber = cardNumber;
             this._id = id;
+            this._price = price;
         }
 
     }

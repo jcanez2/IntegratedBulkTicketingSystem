@@ -15,17 +15,17 @@ namespace IntegratedBulkTicketingSystem
             while (Program.ThemeParkIsOpen)
             {
                 Thread.Sleep(Rand.Next(1500, 3000));
-                NewOrder(Thread.CurrentThread.Name);
+                NewOrder(Thread.CurrentThread.Name, ThemePark.CurrentTicketPrice, false);
             }
         }
          
-        private void NewOrder(string id)
+        private void NewOrder(string id, int price, bool isSale)
         {
             int cardNumber = Rand.Next(9000, 9999);
             int numberOfTicketsRequested = Rand.Next(10, 100);
 
-            TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id);
-            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested}, at {DateTime.Now:hh:mm:ss t z}.");
+            TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id, price);
+            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested}, at {DateTime.Now:t}.");
             Program.TicketOrderBuffer.setOneItem(newOrder); // Sends order to buffer
             CreateOrderEvent?.Invoke(); // Lets Theme park know an order was created
         }
@@ -38,7 +38,7 @@ namespace IntegratedBulkTicketingSystem
         public void TicketsAreOnSale(string id, int price)
         {
             Console.WriteLine($"Ticket Agency {id}: Tickets are on sale for ${price}, we are placing an order.");
-            NewOrder(id);
+            NewOrder(id, price, true);
         }
     }
 }

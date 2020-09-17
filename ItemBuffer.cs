@@ -36,14 +36,14 @@ namespace IntegratedBulkTicketingSystem
         {
             for (int i = 0; i < MaxNumberOfOrders; i++)
             {
-                orderBuffer[i] = new TicketOrder(0, 0, "empty"); // set all values to "empty"
+                orderBuffer[i] = new TicketOrder(0, 0, "empty",0); // set all values to "empty"
             }
         }
 
         public TicketOrder getOneItem()
         {
             _readSemaphores.WaitOne();
-            TicketOrder retrievedOrder = new TicketOrder(0,0,"not a valid order");
+            TicketOrder retrievedOrder = new TicketOrder(0,0,"not a valid order", 0);
 
             lock (this)
             {
@@ -57,7 +57,7 @@ namespace IntegratedBulkTicketingSystem
                     if (orderBuffer[i].Id != "empty") // make sure the order is not empty
                     {
                         retrievedOrder = orderBuffer[i];
-                        orderBuffer[i] = new TicketOrder(0,0,"empty");
+                        orderBuffer[i] = new TicketOrder(0,0,"empty", 0);
                         _numberOfOrders--;
                         break;
                     }

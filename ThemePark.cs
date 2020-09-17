@@ -15,18 +15,20 @@ namespace IntegratedBulkTicketingSystem
             get => _currentCurrentTicketPrice;
             set => _currentCurrentTicketPrice = value;
         }
-        private const int _maxNumberOfPriceCuts = 10;
-        private int _currentNumberOfPriceCuts = 0;
+        private const int MaxNumberOfPriceCuts = 5;
+        private static int _currentNumberOfPriceCuts = 0;
         private static Random _rand = new Random();
 
 
         public void ThemeParkOpenForBusiness()
         {
-            while (_currentNumberOfPriceCuts < _maxNumberOfPriceCuts)
+            while (_currentNumberOfPriceCuts < MaxNumberOfPriceCuts)
             {
                 Thread.Sleep(_rand.Next(500, 1000));
                 ChangePrice();
             }
+
+            Program.ThemeParkIsOpen = false;
         }
 
         private static int GetNewPrice()
@@ -37,16 +39,22 @@ namespace IntegratedBulkTicketingSystem
         private static void ChangePrice()
         {
             int newPrice = GetNewPrice();
-            if (TicketsOnSaleEvent == null)
+            if (index == Program.TicketAgencies.Length)
+            {
+                index = 0;
+            }
+            if (TicketsOnSaleEvent != null)
             {
                 if (newPrice < _currentCurrentTicketPrice)
                 {
                     TicketsOnSaleEvent(Program.TicketAgencies[index].Name, newPrice);
                     index++;
-                    _currentCurrentTicketPrice++;
+                    _currentNumberOfPriceCuts++;
                 }
-                _currentCurrentTicketPrice = newPrice;
             }
+            Console.WriteLine($"There is a price change from ${_currentCurrentTicketPrice} to ${newPrice}");
+            _currentCurrentTicketPrice = newPrice;
+            
         }
 
         public void InitializeOrder() // Event
@@ -56,5 +64,11 @@ namespace IntegratedBulkTicketingSystem
             newThread.Start();
         }
 
+
+        private int myPrices()
+        {
+            int price = _rand.Next(100, 200);
+            return price;
+        }
     }
 }
