@@ -10,9 +10,31 @@ namespace IntegratedBulkTicketingSystem
         private int _numberOfTickets;
         private int _cardNumber;
         private string _id;
-        private int _price;
+        private double _price;
+        private DateTime _sent;
+        private DateTime _confirmed;
+        private TimeSpan _totalTime;
 
-        public int price
+        public DateTime Sent
+        {
+            get => _sent;
+            set => _sent = value;
+        }
+
+
+        public DateTime Confirmed
+        {
+            get => _confirmed;
+            set => _confirmed = value;
+        }
+
+        public TimeSpan TotalTime
+        {
+            get => _totalTime;
+            set => _totalTime = value;
+        }
+
+        public double Price
         {
             get => _price;
             set => _price = value;
@@ -36,7 +58,7 @@ namespace IntegratedBulkTicketingSystem
             set => _id = value;
         }
 
-        public TicketOrder(int numberOfTickets, int cardNumber, string id, int price)
+        public TicketOrder(int numberOfTickets, int cardNumber, string id, double price)
         {
             this._numberOfTickets = numberOfTickets;
             this._cardNumber = cardNumber;

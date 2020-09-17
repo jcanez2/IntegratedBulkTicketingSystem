@@ -23,16 +23,18 @@ namespace IntegratedBulkTicketingSystem
         {
             int cardNumber = Rand.Next(5000, 7000);
             int numberOfTicketsRequested = CalculateNumberOfTicketsToBuy(); // (2)
-
             TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id, price); 
-            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested} tickets, at {DateTime.Now:t}.");
+            newOrder.Sent = DateTime.Now;
+            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested} tickets, at {newOrder.Sent}.");
             Program.TicketOrderBuffer.setOneItem(newOrder); // (3) Sends order to buffer
             CreateOrderEvent?.Invoke(); // Lets Theme park know an order was created
         }
 
         public void OrderHasBeenProcessed(TicketOrder myOrder, int price, int amountPlusTax) //(7)
         {
-            Console.WriteLine($"{myOrder.Id} has received confirmation:\nOrder has been processed, with a ticket price of ${price} for {myOrder.NumberOfTickets} tickets. The total of the transaction was ${amountPlusTax}.");
+            myOrder.Confirmed = DateTime.Now;
+            myOrder.TotalTime = myOrder.Confirmed - myOrder.Sent;
+            Console.WriteLine($"{myOrder.Id} has received confirmation at {myOrder.Confirmed:t} order took {myOrder.TotalTime.TotalMilliseconds} Milliseconds to process:\nOrder has been processed, with a ticket Price of ${price} for {myOrder.NumberOfTickets} tickets. The total of the transaction was ${amountPlusTax}.");
         }
 
         public void TicketsAreOnSale(string id, int price)

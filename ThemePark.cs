@@ -124,7 +124,7 @@ namespace IntegratedBulkTicketingSystem
         private static void ChangePrice()
         {
             int newPrice = GetNewPrice();
-            Console.WriteLine($"\n***There is a price change from ${_currentCurrentTicketPrice} to ${newPrice}, place orders only {_totalNumberOfTicketsLeft} tickets are left at this price and it is {_howBusy} Busy!\n");
+            Console.WriteLine($"\n***There is a Price change from ${_currentCurrentTicketPrice} to ${newPrice}, place orders only {_totalNumberOfTicketsLeft} tickets are left at this Price and it is {_howBusy} Busy!\n");
 
             if (index == Program.TicketAgencies.Length) // resets thread index when all are used
             {
