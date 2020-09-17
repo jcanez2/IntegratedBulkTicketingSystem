@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedBulkTicketingSystem", "IntegratedBulkTicketingSystem.csproj", "{6EBBE3ED-4EB0-4429-BD08-AB9CA2BF4D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegratedBulkTicketingSystem", "IntegratedBulkTicketingSystem.csproj", "{6EBBE3ED-4EB0-4429-BD08-AB9CA2BF4D82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsTicketingSystem", "..\TestsTicketingSystem\TestsTicketingSystem.csproj", "{C8563235-F64F-4621-9FDC-656ED12AA959}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6EBBE3ED-4EB0-4429-BD08-AB9CA2BF4D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EBBE3ED-4EB0-4429-BD08-AB9CA2BF4D82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EBBE3ED-4EB0-4429-BD08-AB9CA2BF4D82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8563235-F64F-4621-9FDC-656ED12AA959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8563235-F64F-4621-9FDC-656ED12AA959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8563235-F64F-4621-9FDC-656ED12AA959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8563235-F64F-4621-9FDC-656ED12AA959}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
