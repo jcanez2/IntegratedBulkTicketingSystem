@@ -26,7 +26,7 @@ namespace IntegratedBulkTicketingSystem
 
             // todo:  Create order object
             Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested}, at {DateTime.Now:hh:mm:ss t z}.");
-             Program.TicketOrderBuffer.setOneCell("order"); // Sends order to buffer
+             //Program.TicketOrderBuffer.setOneCell("order"); // Sends order to buffer
              CreateOrder?.Invoke(); // Lets Theme park know an order was created
         }
 

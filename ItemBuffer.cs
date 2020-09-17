@@ -8,7 +8,7 @@ namespace IntegratedBulkTicketingSystem
     public class ItemBuffer
     {
         private const int MaxNumberOfOrders = 3;
-        private string[] orderBuffer;
+        private TicketOrder[] orderBuffer;
         private int _numberOfOrders = 0;
         private static Semaphore _writeSemaphores; // pool of writing resources
         private static Semaphore _readSemaphores; // pool of reading resources
@@ -21,7 +21,7 @@ namespace IntegratedBulkTicketingSystem
                 {
                     _writeSemaphores = new Semaphore(MaxNumberOfOrders, MaxNumberOfOrders);
                     _readSemaphores = new Semaphore(MaxNumberOfOrders, MaxNumberOfOrders);
-                    orderBuffer = new string[MaxNumberOfOrders];
+                    orderBuffer = new TicketOrder[MaxNumberOfOrders];
                     InitiateBuffer();
                 }
                 catch (Exception e)
@@ -36,14 +36,14 @@ namespace IntegratedBulkTicketingSystem
         {
             for (int i = 0; i < MaxNumberOfOrders; i++)
             {
-                orderBuffer[i] = "empty"; // set all values to "empty"
+                orderBuffer[i] = new TicketOrder(0, 0, "empty"); // set all values to "empty"
             }
         }
 
-        public string getOneCell()
+        public TicketOrder getOneCell()
         {
             _readSemaphores.WaitOne();
-            string retrievedOrder = "empty Order";
+            TicketOrder retrievedOrder = new TicketOrder(0,0,"not valid order");
 
             lock (this)
             {
@@ -54,10 +54,10 @@ namespace IntegratedBulkTicketingSystem
 
                 for (int i = 0; i < MaxNumberOfOrders; i++)
                 {
-                    if (orderBuffer[i] != "empty") // make sure the order is not empty
+                    if (orderBuffer[i].Id != "empty") // make sure the order is not empty
                     {
                         retrievedOrder = orderBuffer[i];
-                        orderBuffer[i] = "empty";
+                        orderBuffer[i] = new TicketOrder(0,0,"empty");
                         _numberOfOrders--;
                         break;
                     }
@@ -70,7 +70,7 @@ namespace IntegratedBulkTicketingSystem
             return retrievedOrder;
         }
         
-        public void setOneCell(string newOrder)
+        public void setOneCell(TicketOrder newOrder)
         {
             _writeSemaphores.WaitOne();
 
@@ -83,7 +83,7 @@ namespace IntegratedBulkTicketingSystem
 
                 for (int i = 0; i < MaxNumberOfOrders; i++)
                 {
-                    if (orderBuffer[i] == "empty") // do not overwrite existing order
+                    if (orderBuffer[i].Id == "empty") // do not overwrite existing order
                     {
                         orderBuffer[i] = newOrder;
                         _numberOfOrders++;
