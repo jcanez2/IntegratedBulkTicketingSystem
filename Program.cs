@@ -1,4 +1,9 @@
-﻿using System;
+﻿// (6) The OrderProcessingThread process the order, e.g., checks the credit card number and calculates the total amount.
+// (7) The OrderProcessingThread process the order, e.g., sends confirmation to the ticket agency and prints the order (on screen)
+
+
+
+using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
@@ -39,7 +44,7 @@ namespace IntegratedBulkTicketingSystem
 
             ThemePark.TicketsOnSaleEvent += new EventTicketsOnSale(iSellTicketsAgency.TicketsAreOnSale);
             TicketAgency.CreateOrderEvent += new EventCreateOrder(disneyLandThemePark.InitializeOrder);
-            OrderProcessing.ProcessOrderEvent += new EventOrderProcessing(iSellTicketsAgency.OrderHasBeenProcessed);
+            OrderProcessing.ProcessedOrderEvent += new EventOrderProcessing(iSellTicketsAgency.OrderHasBeenProcessed); //(7)
 
             for (int i = 0; i < N; i++)
             {

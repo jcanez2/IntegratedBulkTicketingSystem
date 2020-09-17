@@ -6,20 +6,25 @@ namespace IntegratedBulkTicketingSystem
 {
     public class OrderProcessing
     {
-        public static event EventOrderProcessing ProcessOrderEvent;
+        public static event EventOrderProcessing ProcessedOrderEvent;
 
-        private static bool CheckCardNumberIsValid(int cardNumber)
+        private static bool CheckCardNumberIsValid(int cardNumber)// (6)
         {
-            return cardNumber < 10000 && cardNumber > 8999;
+            return cardNumber < 7001 && cardNumber > 4999;
         }
 
         public static bool ProcessOrder(TicketOrder myOrder, int price)
         {
-            if (CheckCardNumberIsValid(myOrder.CardNumber))
+            if (CheckCardNumberIsValid(myOrder.CardNumber)) // (6)
             {
-                double taxAmount = 1.08;
-                int amountPlusTax = (int)((price * myOrder.NumberOfTickets ) * taxAmount);
-                ProcessOrderEvent?.Invoke(myOrder, price, amountPlusTax);
+                //double taxAmount = 1.08;
+                //int amountPlusTax = (int)((price * myOrder.NumberOfTickets ) * taxAmount);// (6)
+                //ProcessOrderEvent?.Invoke(myOrder, price, amountPlusTax); // (7) 
+                //Console.WriteLine($"Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} at a price of {price} amount after tax is {amountPlusTax}.");// (7)
+                int amountPlusTax = CalculateTotalAfterTax(price, myOrder.NumberOfTickets); //(6)
+                SendOrderConfirmation(myOrder, price, amountPlusTax); // (7)
+                PrintOrder(myOrder, price, amountPlusTax);
+
                 return true;
             }
             else
@@ -27,6 +32,23 @@ namespace IntegratedBulkTicketingSystem
                 Console.WriteLine($"The card number {myOrder.CardNumber} is not valid, the order for {myOrder.Id} is cancelled.");
                 return false;
             }
+        }
+
+        private static int CalculateTotalAfterTax(int price, int numberOfTickets)
+        {
+            double taxAmount = 1.08;
+            int amountAfterTax = (int)((price *numberOfTickets) * taxAmount);
+            return amountAfterTax;
+        }
+
+        private static void SendOrderConfirmation(TicketOrder myOrder, int price, int totalAmount)
+        {
+            ProcessedOrderEvent?.Invoke(myOrder, price, totalAmount);
+        }
+
+        private static void PrintOrder(TicketOrder myOrder, int price, int totalAmount)
+        {
+            Console.WriteLine($"Order Process Thread Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} tickets at a price of ${price} amount after tax is ${totalAmount}.");// (7)
         }
     }
 }

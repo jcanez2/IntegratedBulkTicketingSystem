@@ -21,24 +21,45 @@ namespace IntegratedBulkTicketingSystem
          
         private void NewOrder(string id, int price, bool isSale)
         {
-            int cardNumber = Rand.Next(9000, 9999);
-            int numberOfTicketsRequested = Rand.Next(10, 100);
+            int cardNumber = Rand.Next(5000, 7000);
+            int numberOfTicketsRequested = CalculateNumberOfTicketsToBuy(); // (2)
 
-            TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id, price);
-            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested}, at {DateTime.Now:t}.");
-            Program.TicketOrderBuffer.setOneItem(newOrder); // Sends order to buffer
+            TicketOrder newOrder = new TicketOrder(numberOfTicketsRequested, cardNumber, id, price); 
+            Console.WriteLine($"Ticket Agency {id} has ordered {numberOfTicketsRequested} tickets, at {DateTime.Now:t}.");
+            Program.TicketOrderBuffer.setOneItem(newOrder); // (3) Sends order to buffer
             CreateOrderEvent?.Invoke(); // Lets Theme park know an order was created
         }
 
-        public void OrderHasBeenProcessed(TicketOrder myOrder, int price, int amountPlusTax)
+        public void OrderHasBeenProcessed(TicketOrder myOrder, int price, int amountPlusTax) //(7)
         {
-            Console.WriteLine($"Ticket Agency {myOrder.Id} order has been processed, with a ticket price of ${price} for {myOrder.NumberOfTickets} tickets. The total of the transaction was ${amountPlusTax}, which includes tax.");
+            Console.WriteLine($"{myOrder.Id} has received confirmation:\nOrder has been processed, with a ticket price of ${price} for {myOrder.NumberOfTickets} tickets. The total of the transaction was ${amountPlusTax}.");
         }
 
         public void TicketsAreOnSale(string id, int price)
         {
             Console.WriteLine($"Ticket Agency {id}: Tickets are on sale for ${price}, we are placing an order.");
             NewOrder(id, price, true);
+        }
+
+        private int CalculateNumberOfTicketsToBuy() // (2)
+        {
+            int ticketPriceDifference = ThemePark.PreviousTicketPrice - ThemePark.CurrentTicketPrice;
+            if (ticketPriceDifference < 0)
+            {
+                return Rand.Next(10, 25);
+            }
+            else if(ticketPriceDifference < 25)
+            {
+                return Rand.Next(25, 50);
+            }
+            else if(ticketPriceDifference < 50)
+            {
+                return Rand.Next(50, 75);
+            }
+            else
+            {
+                return Rand.Next(75, 100);
+            }
         }
     }
 }

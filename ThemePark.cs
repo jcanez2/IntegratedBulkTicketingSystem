@@ -9,7 +9,15 @@ namespace IntegratedBulkTicketingSystem
     {
         private static int index = 0;
         private static int _currentCurrentTicketPrice = 150;
+        private static int _previousTicketPrice = 150;
         public static event EventTicketsOnSale TicketsOnSaleEvent;
+
+        public static int PreviousTicketPrice
+        {
+            get => _previousTicketPrice;
+            set => _previousTicketPrice = value;
+        }
+
         public static int CurrentTicketPrice
         {
             get => _currentCurrentTicketPrice;
@@ -18,6 +26,7 @@ namespace IntegratedBulkTicketingSystem
         private const int MaxNumberOfPriceCuts = 5;
         private static int _currentNumberOfPriceCuts = 0;
         private static Random _rand = new Random();
+        
 
 
         public void ThemeParkOpenForBusiness()
@@ -53,22 +62,16 @@ namespace IntegratedBulkTicketingSystem
                 }
             }
             Console.WriteLine($"There is a price change from ${_currentCurrentTicketPrice} to ${newPrice}");
+            _previousTicketPrice = _currentCurrentTicketPrice;
             _currentCurrentTicketPrice = newPrice;
             
         }
 
-        public void InitializeOrder() // Event
+        public void InitializeOrder() // Event (5)
         {
-            TicketOrder currentTicketOrder = Program.TicketOrderBuffer.getOneItem();
+            TicketOrder currentTicketOrder = Program.TicketOrderBuffer.getOneItem(); // (4)
             Thread newThread = new Thread(() => OrderProcessing.ProcessOrder(currentTicketOrder, _currentCurrentTicketPrice)); // this should not process at the current price but at the sale price
             newThread.Start();
-        }
-
-
-        private int myPrices()
-        {
-            int price = _rand.Next(100, 200);
-            return price;
         }
     }
 }
