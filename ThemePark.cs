@@ -7,11 +7,6 @@ namespace IntegratedBulkTicketingSystem
 {
     public class ThemePark
     {
-        enum Level
-        {
-            Somewhat, Highly, Very
-        }
-
         private static int business = 1;
         private static int index = 0;
         private static string _howBusy = "Somewhat";

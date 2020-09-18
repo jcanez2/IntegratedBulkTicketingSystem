@@ -28,24 +28,28 @@ namespace IntegratedBulkTicketingSystem
         }
 
         public static Thread[] TicketAgencies;
+        
 
         static void Main(string[] args)
         {
             Console.WriteLine("Start Program:=============================================================");
-
+            // Setup
             TicketOrderBuffer = new ItemBuffer();
             TicketAgencies = new Thread[N];
-
             ThemePark disneyLandThemePark = new ThemePark();
             TicketAgency iSellTicketsAgency = new TicketAgency();
+            // Setup
 
+            // Open Park(s)
             Thread themeParkWorker = new Thread(new ThreadStart(disneyLandThemePark.ThemeParkOpenForBusiness));
             themeParkWorker.Start();
 
+            // Connect Delegates and events
             ThemePark.TicketsOnSaleEvent += new EventTicketsOnSale(iSellTicketsAgency.TicketsAreOnSale);
             TicketAgency.CreateOrderEvent += new EventCreateOrder(disneyLandThemePark.InitializeOrder);
             OrderProcessing.ProcessedOrderEvent += new EventOrderProcessing(iSellTicketsAgency.OrderHasBeenProcessed); //(7)
 
+            // 
             for (int i = 0; i < N; i++)
             {
                 TicketAgencies[i] = new Thread(new ThreadStart(iSellTicketsAgency.StartWorkTicketAgency));
@@ -53,7 +57,6 @@ namespace IntegratedBulkTicketingSystem
                 TicketAgencies[i].Start();
             }
 
-            Console.WriteLine("End Program:===========================================================");
         }
     }
 }

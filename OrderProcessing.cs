@@ -17,10 +17,6 @@ namespace IntegratedBulkTicketingSystem
         {
             if (CheckCardNumberIsValid(myOrder.CardNumber)) // (6)
             {
-                //double taxAmount = 1.08;
-                //int amountPlusTax = (int)((Price * myOrder.NumberOfTickets ) * taxAmount);// (6)
-                //ProcessOrderEvent?.Invoke(myOrder, Price, amountPlusTax); // (7) 
-                //Console.WriteLine($"Printed Order: \n{myOrder.Id} order has been place for {myOrder.NumberOfTickets} at a Price of {Price} amount after tax is {amountPlusTax}.");// (7)
                 int amountPlusTaxAndFees = CalculateTotalAfterTaxAndFees(price, myOrder.NumberOfTickets, 25); //(6)
                 if (RemoveTicketsFromParkInventory(myOrder.NumberOfTickets))
                 {
